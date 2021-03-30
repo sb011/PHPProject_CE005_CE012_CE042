@@ -161,7 +161,7 @@ footer{
         <div class="left box">
           <h2>About us</h2>
           <div class="content">
-            <p>IDisccus is website for gamers.Where user can enter question about game and get answer of it.</p>
+            <p>IDisccus is website for gamers.Where user can enter ideas about game and get answer of it.</p>
             <div class="social">
               <a href="#"><span class="fab fa-facebook-f"></span></a>
               <a href="#"><span class="fab fa-twitter"></span></a>

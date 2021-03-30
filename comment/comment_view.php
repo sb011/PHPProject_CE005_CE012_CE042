@@ -6,16 +6,17 @@ if(!isset($_SESSION['loggedin']) || ($_SESSION['loggedin']!=true)){
     exit;
 }
 
-if(isset($_GET['post_id']) && isset($_GET['comment_id'])){
-    $id = $_GET['post_id'];
-    $sql = "SELECT * FROM `post` WHERE `Id`=$id";
-    $result = mysqli_query($conn, $sql);
-    $data = mysqli_fetch_assoc($result);
-
+if(isset($_GET['comment_id'])){
+    
     $comment_id = $_GET['comment_id'];
     $sqlcomment = "SELECT * FROM `comment` WHERE `Id`=$comment_id";
     $result1 = mysqli_query($conn, $sqlcomment);
     $data1 = mysqli_fetch_assoc($result1);
+
+    $sql = "SELECT * FROM `post` WHERE `Id`={$data1['post_id']}";
+    $result = mysqli_query($conn, $sql);
+    $data = mysqli_fetch_assoc($result);
+
 }
 ?>
 
@@ -50,6 +51,17 @@ if(isset($_GET['post_id']) && isset($_GET['comment_id'])){
     padding: 20px;
     text-align: center;
     font-size: 20px;
+    word-break: break-all;
+    overflow-y: scroll;
+    overflow-x:hidden;
+}
+.container b{
+  color:aqua;
+  margin-top:20px;
+  margin-bottom:20px;
+}
+.container::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
 }
 h1{
     font-size: 40px;
@@ -146,23 +158,18 @@ table th {
 #cmt{
   inline-size: 400px;
 }
-.container b{
-  color:aqua;
-  margin-top:20px;
-  margin-bottom:20px;
-}
 
   </style>
   </head>
   <header>
   <?php
-include '../partials/nav2.php'; ?>
+include '../partials/nav3.php'; ?>
 
 <body>
   <div class="container">
-    <h1><b>Post Title:</b> <?php echo $data['title'] ?></h1>
+    <h1><b>Post Title: </b><?php echo $data['title'] ?></h1>
     <h1><b>Post: </b><?php echo $data['post'] ?></h1>
-    <h1 style="word-break: break-all;"><b>Comment:</b> <br> <?php echo $data1['comment'] ?></h1>
+    <h1 style="word-break: break-all;"><b>Comment: </b><br> <?php echo $data1['comment'] ?></h1>
     <h1><b>Commented By:</b><?php
               $user_id = $data['user_id'];
               $sqlcommentuser = "SELECT * FROM `users` WHERE `Id`=$user_id";

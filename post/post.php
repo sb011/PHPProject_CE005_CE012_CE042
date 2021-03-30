@@ -6,21 +6,33 @@ if(!isset($_SESSION['loggedin']) || ($_SESSION['loggedin']!=true)){
     exit;
 }
 
+$flag = 0;
+
 if(isset($_GET['id'])){
-    $id = $_GET['id'];
-    $sql = "SELECT * FROM `post` WHERE `Id`=$id";
-    $result = mysqli_query($conn, $sql);
-    $data = mysqli_fetch_assoc($result);
+  $getyourpost = "SELECT * FROM `post` WHERE `Id`={$_GET['id']}";
+  $getpost = mysqli_query($conn, $getyourpost);
+ 
+  while($data6 = mysqli_fetch_array($getpost)){
+    if($_GET['id'] == $data6['Id']){
+      if(isset($_GET['id'])){
+        $id = $_GET['id'];
+        $sql = "SELECT * FROM `post` WHERE `Id`=$id";
+        $result = mysqli_query($conn, $sql);
+        $data = mysqli_fetch_assoc($result);
 
-    // session_start();
-    $username = $_SESSION['username'];
-    $getuser = "SELECT * FROM `users` WHERE username='$username'";
-    $userresult = mysqli_query($conn, $getuser);
-    $data3 = mysqli_fetch_assoc($userresult);
+        // session_start();
+        $username = $_SESSION['username'];
+        $getuser = "SELECT * FROM `users` WHERE username='$username'";
+        $userresult = mysqli_query($conn, $getuser);
+        $data3 = mysqli_fetch_assoc($userresult);
 
-    $commentsql = "SELECT * FROM `comment` WHERE `post_id`=$id";
-    $result2 = mysqli_query($conn, $commentsql);
-    
+        $commentsql = "SELECT * FROM `comment` WHERE `post_id`=$id";
+        $result2 = mysqli_query($conn, $commentsql);
+        
+      }
+      $flag = 1;
+    }
+  }
 }
 ?>
 
@@ -55,6 +67,12 @@ if(isset($_GET['id'])){
     padding: 20px;
     text-align: center;
     font-size: 20px;
+    word-break: break-all;
+    overflow-y: scroll;
+    overflow-x:hidden;
+}
+.container::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
 }
 h1{
     font-size: 40px;
@@ -138,11 +156,6 @@ table th {
     color: white;  
     background-color: gray;  
 }
-.container b{
-  color:aqua;
-  margin-top:20px;
-  margin-bottom:20px;
-}
 
 #cmt{
   inline-size: 400px;
@@ -157,10 +170,11 @@ table th {
     text-decoration: none;
     padding: 10px;
 }
-.link a:hover{
-  opacity: 0.8;
+.container b{
+  color:aqua;
+  margin-top:20px;
+  margin-bottom:20px;
 }
-
 </style>
 </head>
   <header>
@@ -169,6 +183,8 @@ include '../partials/nav3.php'; ?>
 
 <body>
   <div class="container">
+  <?php if($flag == 1){
+    ?>
     <h1><b>Post Title: </b><?php echo $data['title'] ?></h1>
     <h1><b>Post: </b><?php echo $data['post'] ?></h1>
     <h1><b>Post likes:</b>
@@ -220,7 +236,7 @@ include '../partials/nav3.php'; ?>
             while($data1 = mysqli_fetch_array($result2)){ 
               ?>      
       <tr>
-        <td id="cmt"><a href="../comment/comment_view.php?user_id=<?php echo $data3['Id']?>&post_id=<?php echo $data['Id'] ?>&comment_id=<?php echo $data1['Id'] ?>"><?php echo $data1['comment'] ?></a></td>
+        <td id="cmt"><a href="../comment/comment_view.php?comment_id=<?php echo $data1['Id'] ?>"><?php echo $data1['comment'] ?></a></td>
         <td id="user"><?php
               $user_id = $data1['user_id'];
               $sqlcommentuser = "SELECT * FROM `users` WHERE `Id`=$user_id";
@@ -236,6 +252,10 @@ include '../partials/nav3.php'; ?>
       ?>
       </tbody>
     </table>
+    <?php }
+    else{
+      echo "post doesn't exist!!";
+    } ?>
     </div>
 </body>
 </header>

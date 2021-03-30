@@ -11,20 +11,17 @@ $getuser = "SELECT * FROM `users` WHERE username='$username'";
 $userresult = mysqli_query($conn, $getuser);
 $data5 = mysqli_fetch_assoc($userresult);
 
-if(isset($_GET['post_id'])){
-    $getyourpost = "SELECT * FROM `post` WHERE `user_id`={$data5['Id']} AND `Id`={$_GET['post_id']}";
-    $getpost = mysqli_query($conn, $getyourpost);
-
-    $flag = 0;    
-    while($data6 = mysqli_fetch_array($getpost)){
-        if($_GET['post_id'] == $data6['Id']){
-            if(isset($_GET['user_id']) && isset($_GET['post_id']))
-            {
-                $user_id = $_GET['user_id'];
-                $post_id = $_GET['post_id'];
-            }
-            $flag = 1;
+$getcomments = "SELECT * FROM `post`";
+$result3 = mysqli_query($conn, $getcomments);
+$flag = 0;
+while($data6 = mysqli_fetch_array($result3)){
+    if($data6['Id'] == $_GET['post_id']){
+        if(isset($_GET['user_id']) && isset($_GET['post_id']))
+        {
+            $user_id = $_GET['user_id'];
+            $post_id = $_GET['post_id'];
         }
+        $flag = 1;
     }
 }
 
@@ -128,7 +125,7 @@ include '../partials/nav2.php'; ?>
         <?php
                 }
                 else{
-                    echo "This is not your post!!";
+                    echo "Post doesn't exist!!";
                 }
             }
             else{
