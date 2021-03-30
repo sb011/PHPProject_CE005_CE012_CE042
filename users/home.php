@@ -26,9 +26,82 @@
   	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   	<link rel="stylesheet" href="like/main.css">
     <title>Home</title>
+
+    <style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+    *{
+	margin: 0;
+	padding: 0;
+}
+body {
+	font-family: 'Poppins', sans-serif;
+}
+
+header{
+    background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),url("../images/1624.jpg");
+    -webkit-background-size: cover;
+    height:100vh;  
+    background-position: cover cover;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* position:center; */
+}
+.container{
+    justify-content: center;
+    border-radius: 5%;
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0, 0.5); 
+    color: white;
+    font-weight: bold;
+    border: 3px solid #f1f1f1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 60%;
+    height: 70%;
+    margin-top:25px;
+    padding: 20px;
+    text-align: center;
+    font-size: 20px;
+}
+table{
+    position: relative;
+    height: 50%;
+    width:80%;
+    margin: 100px 100px 10px 100px;
+}
+table a{
+    text-decoration: none;
+    color:black;
+}
+table, th, td {  
+    border: 1px solid black;  
+    border-collapse: collapse;  
+}  
+th, td {  
+    padding: 10px;  
+}  
+table tr:nth-child(even) {  
+    background-color: #eee;  
+    color: gray;
+}  
+table tr:nth-child(odd) {  
+    background-color: #fff;  
+    color:gray;
+}  
+table th {  
+    color: white;  
+    background-color: gray;  
+}
+</style>
 </head>
+<header>
+
 <body>
-<table style="width: 100%">
+<div class="container">
+<table>
 <tr>
     <th>id</th>
     <th>Post</th>
@@ -51,7 +124,7 @@
                     <?php else: ?>
                       class="fa fa-thumbs-o-up like-btn"
                     <?php endif ?>
-                    data-id="<?php echo $data['Id'] ?>"></i>
+                    data-id="<?php echo $data['Id'] ?>" style="color:red;"></i>
                   <span class="likes"><?php echo getLikes($data['Id']); ?></span>
                   
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -63,7 +136,7 @@
                     <?php else: ?>
                       class="fa fa-thumbs-o-down dislike-btn"
                     <?php endif ?>
-                    data-id="<?php echo $data['Id'] ?>"></i>
+                    data-id="<?php echo $data['Id'] ?>" style="color:red;"></i>
                   <span class="dislikes"><?php echo getDislikes($data['Id']); ?></span>
                   <script src="../like/scripts.js"></script>
 
@@ -90,5 +163,7 @@
     }  
 ?>
 </table>
+</div>
 </body>
+</header>
 </html>

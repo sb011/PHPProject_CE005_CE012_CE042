@@ -56,7 +56,7 @@ if(isset($_SESSION['loggedin']) && isset($_SESSION['username'])){
 <?php require 'partials/nav1.php'; ?>
 <div class="welcome-text">
         <h1>
-Welcome!!<span>  <?php echo $_SESSION['username']?></span></h1>
+Welcome!!<span> <br> <?php echo $_SESSION['username']?></span></h1>
 <a href="users/profile.php?id=<?php echo $data['Id']; ?>">Account</a>
 <a href="users/logout.php">Logout</a>
 </div>

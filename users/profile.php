@@ -19,6 +19,7 @@ if (isset($_GET['id'])){
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,39 +28,89 @@ if (isset($_GET['id'])){
   	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   	<link rel="stylesheet" href="like/main.css">
     <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+
+.container{
+    justify-content: center;
+    border-radius: 5%;
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0, 0.5); 
+    color: white;
+    font-weight: bold;
+    border: 3px solid #f1f1f1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 60%;
+    height: 70%;
+    margin-top:25px;
+    padding: 20px;
+    text-align: center;
+    font-size: 20px;
+}
+h1{
+    font-size: 40px;
+    font-family: 'Poppins';
+    margin-bottom: 10px;
+}
+table{
+    position: relative;
+}
+.table1{
+    margin-left: 70px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+table a{
+    text-decoration: none;
+    color:black;
+}
+.table2{
+    margin-left: 110px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+table, th, td {  
+    border: 1px solid black;  
+    border-collapse: collapse;  
+}  
+th, td {  
+    padding: 10px;  
+}  
+table tr:nth-child(even) {  
+    background-color: #eee;  
+    color: gray;
+}  
+table tr:nth-child(odd) {  
+    background-color: #fff;  
+    color:gray;
+}  
+table th {  
+    color: white;  
+    background-color: gray;  
+}
+.link a{
+    background-color: #4CAF50;
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+    padding: 10px;
+}
+</style>
+
 </head>
+<header>
+<?php include '../partials/nav.php'; ?>
 <body>
-    <table border=1>
-        <tr>
-            <th>User ID</th>
-            <th>Name</th>
-            <th>Email</th>
-        </tr>
-        <?php
-        if ($result){
-            if(mysqli_num_rows($result) > 0 ){
-                while($data = mysqli_fetch_array($result)){ 
-                ?>
-        <tr>
-            <td><?php echo $data['Id'] ?></td>
-            <td><?php echo $data['username'] ?></td>
-            <td><?php echo $data['email'] ?></td>
-        </tr>
-        <?php
-                } 
-            }
-            else{
-                echo "no post";
-            }
-        }
-        else{
-            echo "problem";
-        } 
-        ?>  
-    </table>
+<div class="container">
     <h1>Your Post</h1>
+    <div class="link">
     <a href="../post/add_post.php?user_id=<?php echo $id; ?>">Add Post</a>
-    <table border=1>
+    </div>
+    <table border=1 align="center" class="table1">
         <tr>
             <th>Question No</th>
             <th>Title</th>
@@ -83,9 +134,9 @@ if (isset($_GET['id'])){
                 <i <?php if (userLiked($data1['Id'])): ?>
                       class="fa fa-thumbs-up like-btn"
                     <?php else: ?>
-                      class="fa fa-thumbs-o-up like-btn"
+                      class="fa fa-thumbs-o-up like-btn" 
                     <?php endif ?>
-                    data-id="<?php echo $data1['Id'] ?>"></i>
+                    data-id="<?php echo $data1['Id'] ?>" style="color:red;"></i>
                   <span class="likes"><?php echo getLikes($data1['Id']); ?></span>
                   
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -93,11 +144,11 @@ if (isset($_GET['id'])){
                 <!-- if user dislikes post, style button differently -->
                   <i 
                     <?php if (userDisliked($data1['Id'])): ?>
-                      class="fa fa-thumbs-down dislike-btn"
+                      class="fa fa-thumbs-down dislike-btn" 
                     <?php else: ?>
-                      class="fa fa-thumbs-o-down dislike-btn"
+                      class="fa fa-thumbs-o-down dislike-btn" 
                     <?php endif ?>
-                    data-id="<?php echo $data1['Id'] ?>"></i>
+                    data-id="<?php echo $data1['Id'] ?>" style="color:red;"></i>
                   <span class="dislikes"><?php echo getDislikes($data1['Id']); ?></span>
                   <script src="../like/scripts.js"></script>
 
@@ -105,20 +156,22 @@ if (isset($_GET['id'])){
             <td><a href='../post/update_post.php?user_id=<?php echo $id; ?>&id=<?php echo $data1['Id']; ?>'>Update Record</a></td>
             <td><a href='../post/remove_post.php?user_id=<?php echo $id; ?>&id=<?php echo $data1['Id']; ?>'>Delete Post</a></td>
         </tr>
+        <div class="warning">
         <?php
                 } 
             }
             else{
-                echo "no post";
+                echo '<br><a>No post</a>';
             }
         }
         else{
-            echo "problem";
+            echo "<a>Problem</a>";
         } 
         ?>  
+        
     </table>
     <h1>Your Comments</h1>
-    <table border=1>
+    <table border=1 align="center" class="table2">
         <tr>
             <th>Comment Id</th>
             <th>Comment</th>
@@ -158,13 +211,15 @@ if (isset($_GET['id'])){
                 } 
             }
             else{
-                echo "no post";
+                echo "<a>No post</a>";
             }
         }
         else{
-            echo "problem";
+            echo "<a>Problem</a>";
         } 
         ?> 
     </table>
+</div>
 </body>
+</header>
 </html>

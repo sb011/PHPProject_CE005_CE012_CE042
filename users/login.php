@@ -81,11 +81,9 @@ h1{
 }
 .container{
     border-radius: 12%;
-    background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0, 0.5); /* Black w/opacity/see-through */
     color: white;
     font-weight: bold;
-    font-size: 19px;
     border: 3px solid #f1f1f1;
     position: absolute;
     top: 50%;
