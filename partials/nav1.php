@@ -103,10 +103,10 @@ else{
 if($loggedin){
 echo'
 <ul>
-<li><a href="" class="active">Home</a></li>
-<li><a href="">About us</a></li>
-<li><a href="">Contact us</a></li>
-<li><a href="/users/logout.php">Logout</a></li>
+<li><a href="users/home.php" class="active">Home</a></li>
+<li><a href="">New games</a></li>
+<li><a href="">Pro gamers</a></li>
+<li><a href="users/logout.php">Logout</a></li>
 <div class="search">
      <input type="text" name="search" id="search" placeholder="search here">
      <button type="search" class="button" value="search">Search</button>

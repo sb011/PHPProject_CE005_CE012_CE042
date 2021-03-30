@@ -1,15 +1,25 @@
 <?php
     require_once('../partials/dbconnect.php');
     include('../like/post_function.php');
+		$per_page_record = 8;  // Number of entries to show in a page.   
 
-    $sql = "SELECT * FROM `post`;";
-    $result = mysqli_query($conn, $sql);
+	if (isset($_GET["page"])) {    
+		$page  = $_GET["page"];    
+	}    
+	else {    
+	  $page=1;    
+	}    
+
+	$start_from = ($page-1) * $per_page_record;     
+
+    $sql = "SELECT * FROM `post` LIMIT $start_from, $per_page_record;";
+    $result = mysqli_query($conn, $sql); 
+	// Look for a GET variable page if not found default is 1.        
+	    
 ?>
 <style>
-    table, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-    }
+
+
 </style>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +35,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
   	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   	<link rel="stylesheet" href="like/main.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">   
+
     <title>Home</title>
+	<script>   
+		function go2Page()   
+		{   
+			var page = document.getElementById("page").value;   
+			page = ((page><?php echo $total_pages; ?>)?<?php echo $total_pages; ?>:((page<1)?1:page));   
+			window.location.href = 'index1.php?page='+page;   
+		}   
+  </script>  
+
 
     <style>
     @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
@@ -48,7 +69,7 @@ header{
 }
 .container{
     justify-content: center;
-    border-radius: 5%;
+    border-radius: 10%;
     background-color: rgb(0,0,0); 
     background-color: rgba(0,0,0, 0.5); 
     color: white;
@@ -60,17 +81,18 @@ header{
     transform: translate(-50%, -50%);
     z-index: 2;
     width: 60%;
-    height: 70%;
+    height: 75%;
     margin-top:25px;
     padding: 20px;
     text-align: center;
     font-size: 20px;
 }
 table{
+    table-layout:fixed;
     position: relative;
     height: 50%;
     width:80%;
-    margin: 100px 100px 10px 100px;
+    margin: 40px 100px 10px 100px;
 }
 table a{
     text-decoration: none;
@@ -79,6 +101,7 @@ table a{
 table, th, td {  
     border: 1px solid black;  
     border-collapse: collapse;  
+    overflow: hidden;
 }  
 th, td {  
     padding: 10px;  
@@ -95,6 +118,43 @@ table th {
     color: white;  
     background-color: gray;  
 }
+table, th, td {
+    height: 20px;
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+
+    .inline{   
+            display: inline-block;   
+            float: right;   
+            margin: 20px 0px;   
+        }   
+         
+        input, button{   
+            height: 34px;   
+        }   
+  
+    .pagination {   
+        display: inline-block;   
+    background-color: red;
+    margin-top:0px;
+    }   
+    .pagination a {   
+        font-weight:bold;   
+        font-size:18px;   
+        color: black;   
+        float: left;   
+        padding: 8px 16px;   
+        text-decoration: none;   
+        border:1px solid black;   
+    }   
+    .pagination a.active {   
+            background-color: pink;   
+    }   
+    .pagination a:hover:not(.active) {   
+        background-color: skyblue;   
+    }   
 </style>
 </head>
 <header>
@@ -103,55 +163,54 @@ table th {
 <div class="container">
 <table>
 <tr>
-    <th>id</th>
     <th>Post</th>
     <th>Likes</th>
     <th>Posted By</th>
 </tr>
 <?php
+
     if ($result){
         if(mysqli_num_rows($result) > 0 ){
-            while($data = mysqli_fetch_array($result)){ 
-            ?>
-            <tr>
-                <td><?php echo $data['Id']; ?></td>
-                <td><a href="../post/post.php?id=<?php echo $data['Id']; ?>"><?php echo $data['title'];?></a></td>
-                <td>
+				while($data = mysqli_fetch_array($result)){ 
+				?>
+				<tr>
+					<td><a href="../post/post.php?id=<?php echo $data['Id']; ?>"><?php echo $data['title'];?></a></td>
+					<td>
 
-                  <!-- if user likes post, style button differently -->
-                  <i <?php if (userLiked($data['Id'])): ?>
-                      class="fa fa-thumbs-up like-btn"
-                    <?php else: ?>
-                      class="fa fa-thumbs-o-up like-btn"
-                    <?php endif ?>
-                    data-id="<?php echo $data['Id'] ?>" style="color:red;"></i>
-                  <span class="likes"><?php echo getLikes($data['Id']); ?></span>
-                  
-                  &nbsp;&nbsp;&nbsp;&nbsp;
+					  <!-- if user likes post, style button differently -->
+					  <i <?php if (userLiked($data['Id'])): ?>
+						  class="fa fa-thumbs-up like-btn"
+						<?php else: ?>
+						  class="fa fa-thumbs-o-up like-btn"
+						<?php endif ?>
+						data-id="<?php echo $data['Id'] ?>" style="color:red;"></i>
+					  <span class="likes"><?php echo getLikes($data['Id']); ?></span>
+					  
+					  &nbsp;&nbsp;&nbsp;&nbsp;
 
-                <!-- if user dislikes post, style button differently -->
-                  <i 
-                    <?php if (userDisliked($data['Id'])): ?>
-                      class="fa fa-thumbs-down dislike-btn"
-                    <?php else: ?>
-                      class="fa fa-thumbs-o-down dislike-btn"
-                    <?php endif ?>
-                    data-id="<?php echo $data['Id'] ?>" style="color:red;"></i>
-                  <span class="dislikes"><?php echo getDislikes($data['Id']); ?></span>
-                  <script src="../like/scripts.js"></script>
+					<!-- if user dislikes post, style button differently -->
+					  <i 
+						<?php if (userDisliked($data['Id'])): ?>
+						  class="fa fa-thumbs-down dislike-btn"
+						<?php else: ?>
+						  class="fa fa-thumbs-o-down dislike-btn"
+						<?php endif ?>
+						data-id="<?php echo $data['Id'] ?>" style="color:red;"></i>
+					  <span class="dislikes"><?php echo getDislikes($data['Id']); ?></span>
+					  <script src="../like/scripts.js"></script>
 
-                </td>
-                <td>
-                  <?php
-                    $id = $data['user_id'];
-                    $sqluser = "SELECT * FROM `users` WHERE `Id`=$id";
-                    $result1 = mysqli_query($conn, $sqluser);
-                    $user = mysqli_fetch_array($result1);
-                    echo $user['username'];
-                  ?>
-                </td>
-            </tr>
-            <?php
+					</td>
+					<td>
+					  <?php
+						$id = $data['user_id'];
+						$sqluser = "SELECT * FROM `users` WHERE `Id`=$id";
+						$result1 = mysqli_query($conn, $sqluser);
+						$user = mysqli_fetch_array($result1);
+						echo $user['username'];
+					  ?>
+					</td>
+				</tr>
+				<?php
             } 
         }
         else{
@@ -162,7 +221,41 @@ table th {
         echo "problem";
     }  
 ?>
-</table>
+</table>      
+      <?php  
+        $query = "SELECT COUNT(*) FROM post";     
+        $rs_result = mysqli_query($conn, $query);     
+        $row = mysqli_fetch_row($rs_result);     
+        $total_records = $row[0];     
+          
+    echo "</br>";     
+        // Number of pages required.   
+        $total_pages = ceil($total_records / $per_page_record);     
+        $pagLink = "";   ?>    
+        <div class="pagination">
+        <?php
+        if($page>=2){   
+            echo "<a href='home.php?page=".($page-1)."'>  Prev </a>";   
+        }       
+                   
+        for ($i=1; $i<=$total_pages; $i++) {   
+          if ($i == $page) {   
+              $pagLink .= "<a class = 'active' href='home.php?page="  
+                                                .$i."'>".$i." </a>";   
+          }               
+          else  {   
+              $pagLink .= "<a href='home.php?page=".$i."'>   
+                                                ".$i." </a>";     
+          }   
+        };     
+        echo $pagLink;   
+  
+        if($page<$total_pages){   
+            echo "<a href='home.php?page=".($page+1)."'>  Next </a>";   
+        }   
+  
+      ?>    
+      </div> 
 </div>
 </body>
 </header>

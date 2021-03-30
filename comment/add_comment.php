@@ -33,9 +33,67 @@ if (isset($_POST['add_comment'])){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+    .container{
+        border-radius: 5%;
+        background-color: rgba(0,0,0, 0.5); 
+        color: white;
+        font-weight: bold;
+        border: 3px solid #f1f1f1;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        width: 60%;
+        height: 70%;
+        margin-top:25px;
+        padding: 20px;
+        text-align: center;
+        font-size: 20px;
+}  
+.container label{
+    font-family: 'Poppins';
+    font-size: 30px;
+    font-weight: bold;
+}
+.container input[type=text],textarea[type=text]{
+  width: 90%;
+  height: 15%;
+  padding: 12px 20px;
+  margin: 45px 70px 45px 42px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 15px 50px 30px;
+  font-size: 20px;
+  text-align: center;
+}
+.container textarea[type=text]{
+    height: 40%;
+}
+
+.container button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 25px 0px 25px 10px;
+  border: none;
+  cursor: pointer;
+  width: 50%;
+  font-size: 25px;
+  float: center;
+}
+.container button:hover {
+  opacity: 0.8;
+}
+    </style>
 </head>
+<header>
+<?php include '../partials/nav.php'; ?>
 <body>
-    <form method="POST" action="/forum/comment/add_comment.php">
+    <form method="POST" action="/forum/comment/add_comment.php" class="container">
         <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
         <input type="hidden" name="post_id" value="<?php echo $post_id ?>">
         <label for="comment">Comment</label>
@@ -43,4 +101,5 @@ if (isset($_POST['add_comment'])){
         <button type="submit" name="add_comment">comment</button>
     </form>
 </body>
+</header>
 </html>

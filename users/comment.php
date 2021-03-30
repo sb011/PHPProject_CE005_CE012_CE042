@@ -1,19 +1,10 @@
 <?php
 require_once('../partials/dbconnect.php');
-include('../like/post_function.php');
 
-$username = $_SESSION['username'];
-$getuser = "SELECT * FROM `users` WHERE username='$username'";
-$userresult = mysqli_query($conn, $getuser);
-$data3 = mysqli_fetch_assoc($userresult);
-
-if (isset($_GET['id'])){
+if(isset($_GET['id'])){
     $id = $_GET['id'];
-    $sql = "SELECT * FROM `users` WHERE `Id`=$id";
-    $result = mysqli_query($conn, $sql);
-
-    $sqlpost = "SELECT * FROM `post` WHERE `user_id`=$id";
-    $result1 = mysqli_query($conn, $sqlpost);
+    $sqlcomment = "SELECT * FROM `comment` WHERE `user_id`=$id";
+    $result2 = mysqli_query($conn, $sqlcomment);
 }
 ?>
 
@@ -70,26 +61,28 @@ table a{
     text-decoration: none;
     color:black;
 }
-.table2{
-    /* margin-left: 110px;
-    margin-top: 25px;
-    margin-bottom: 25px; */
-}
 table, th, td {  
     border: 0px solid black;  
     border-collapse: collapse;  
 }  
-th, td {  
-    width: 30px;
-    overflow: hidden;
+th, td {
+    overflow: hidden;  
     padding: 10px;  
+    width:30px;
 } 
+tr{
+    overflow: none;
+}
 .table-scroll {
+    /*width:100%; */
     display: block;
+    /* empty-cells: show; */
     width: 25cm;
-    height: 200px;
+    height: 300px;
     margin-left: 3em;
+    /* Decoration */
     border-spacing: 0;
+    /* border: rgba(130, 130, 170, 0.1); */
   } 
   .table-scroll thead {
     border-radius: 15px;
@@ -102,11 +95,14 @@ th, td {
 
   .table-scroll tbody {
     border-radius: 15px;
+    /* Position */
     display: block;
     position: relative;
     width: 100%;
-    height: 300px;
+    height: 330px;
     overflow-y: scroll;
+    /* overflow-y: hidden; */
+    /* Decoration */
     border-top: 1px solid rgba(0, 0, 0, 0.2);
   }
 
@@ -120,15 +116,17 @@ th, td {
     flex-basis: 100%;
     flex-grow: 2;
     display: block;
+    /* padding: 1rem; */
     text-align: center;
   }
 
+  
   .table-scroll.small-first-col td:first-child,
   .table-scroll.small-first-col th:first-child {
     flex-basis: 20%;
     flex-grow: 1;
   }
-  .body-half-screen::-webkit-scrollbar {
+.body-half-screen::-webkit-scrollbar {
     display: none;
 }
 table tr:nth-child(even) {  
@@ -142,9 +140,6 @@ table tr:nth-child(odd) {
 table th {  
     color: white;  
     background-color: gray;  
-}
-.link{
-    margin-bottom: 20px;
 }
 .link a{
     background-color: #4CAF50;
@@ -160,86 +155,56 @@ table th {
 <?php include '../partials/nav.php'; ?>
 <body>
 <div class="container">
-    <h1>Your Post</h1>
-    <?php
-        if((int)$data3['Id'] == (int)$_GET['id']){
-    ?>
-        <div class="link">
-        <a href="../post/add_post.php?user_id=<?php echo $id; ?>">Add Post</a>
-        <a href="comment.php?id=<?php echo $id; ?>">Your Comment</a>
-        </div>
-    <?php
-        }
-    ?>
+    <h1>Your Comments</h1>
     <table border=1 align="center" class="table1 table-scroll small-first-col">
         <thead>
         <tr>
-            <th>Question No</th>
-            <th>Title</th>
-            <th>Post</th>
+            <th>Id</th>
+            <th>Comment</th>
             <th>likes</th>
-            <?php
-                if ((int)$data3['Id'] == (int)$_GET['id']){
-            ?>
-            <th>Update</th>
+            <th>Post</th>
+            <th>update</th>
             <th>Remove</th>
-            <?php } ?>
         </tr>
         </thead>
         <tbody class="body-half-screen">
         <?php
-        if ($result1){
-            if(mysqli_num_rows($result1) > 0 ){
-                while($data1 = mysqli_fetch_array($result1)){ 
-                ?>
+        if($result2){
+            if(mysqli_num_rows($result2) > 0 ){
+                while($data2 = mysqli_fetch_array($result2)){ 
+        ?>
         <tr>
-            <td><?php echo $data1['Id'] ?></td>
-            <td><a href="../post/post.php?id=<?php echo $data1['Id']; ?>"><?php echo $data1['title'] ?></a></td>
-            <td><?php echo $data1['post'] ?></td>
+            <td><?php echo $data2['Id'] ?></td>
+            <td><?php echo $data2['comment'] ?></td>
+            <td><?php if ($data2['likes'] == NULL)
+                            echo "0";
+                      else
+                            echo $data2['likes']; ?></td>
             <td>
-
-                <!-- if user likes post, style button differently -->
-                <i <?php if (userLiked($data1['Id'])): ?>
-                      class="fa fa-thumbs-up like-btn"
-                    <?php else: ?>
-                      class="fa fa-thumbs-o-up like-btn" 
-                    <?php endif ?>
-                    data-id="<?php echo $data1['Id'] ?>" style="color:red;"></i>
-                  <span class="likes"><?php echo getLikes($data1['Id']); ?></span>
-                  
-                  &nbsp;&nbsp;&nbsp;&nbsp;
-
-                <!-- if user dislikes post, style button differently -->
-                  <i 
-                    <?php if (userDisliked($data1['Id'])): ?>
-                      class="fa fa-thumbs-down dislike-btn" 
-                    <?php else: ?>
-                      class="fa fa-thumbs-o-down dislike-btn" 
-                    <?php endif ?>
-                    data-id="<?php echo $data1['Id'] ?>" style="color:red;"></i>
-                  <span class="dislikes"><?php echo getDislikes($data1['Id']); ?></span>
-                  <script src="../like/scripts.js"></script>
-
+                <?php
+                    $getpost = "SELECT * FROM `post` WHERE `Id`=${data2['post_id']}";
+                    $result3 = mysqli_query($conn, $getpost);
+                    $data3 = mysqli_fetch_array($result3);
+                    $getuser = "SELECT * FROM `users` WHERE `Id`=${data3['user_id']}";
+                    $result4 = mysqli_query($conn, $getuser);
+                    $data4 = mysqli_fetch_array($result4);
+                    echo $data4['username'];
+                   ?>
             </td>
-            <?php
-                if ((int)$data3['Id'] == (int)$_GET['id']){
-            ?>
-            <td><a href='../post/update_post.php?user_id=<?php echo $id; ?>&id=<?php echo $data1['Id']; ?>'>Update Record</a></td>
-            <td><a href='../post/remove_post.php?user_id=<?php echo $id; ?>&id=<?php echo $data1['Id']; ?>'>Delete Post</a></td>
-            <?php } ?>
+            <td><a href="../comment/update_comment.php?id=<?php echo $data2['Id']?>&user_id=<?php echo $data2['user_id'] ?>&post_id=<?php echo $data2['post_id'] ?>">update</a></td>
+            <td><a href="../comment/remove_comment.php?id=<?php echo $data2['Id']?>&user_id=<?php echo $data2['user_id'] ?>&post_id=<?php echo $data2['post_id'] ?>">Remove</a></td>
         </tr>
-        <div class="warning">
         <?php
                 } 
             }
             else{
-                echo '<br><a>No post</a>';
+                echo "<a>No post</a>";
             }
         }
         else{
             echo "<a>Problem</a>";
         } 
-        ?>  
+        ?> 
         </tbody>
     </table>
 </div>
