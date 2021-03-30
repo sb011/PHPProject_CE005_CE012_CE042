@@ -1,6 +1,10 @@
 <?php
 require_once('../partials/dbconnect.php');
-
+session_start();
+if(!isset($_SESSION['loggedin']) || ($_SESSION['loggedin']!=true)){
+    header("location: ../users/login.php");
+    exit;
+}
 if(isset($_GET['id']))
 {
     $id = $_GET['id'];
@@ -83,7 +87,7 @@ p{
 </head>
 <header>
 <?php 
-session_start();
+
 include '../partials/nav2.php'; ?>
 <body>
     <div class="container">

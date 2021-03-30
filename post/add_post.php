@@ -1,6 +1,10 @@
 <?php
 require_once('../partials/dbconnect.php');
-
+session_start();
+if(!isset($_SESSION['loggedin']) || ($_SESSION['loggedin']!=true)){
+    header("location: ../users/login.php");
+    exit;
+}
 if(isset($_GET['user_id']))
 {
     $user_id = $_GET['user_id'];
@@ -89,7 +93,6 @@ if (isset($_POST['add_post'])){
 </head>
 <header>
 <?php 
-session_start();
 include '../partials/nav2.php'; ?>
 <body>
     <form method="POST" action="/forum/post/add_post.php" class="container">

@@ -2,7 +2,10 @@
     require_once('../partials/dbconnect.php');
     include('../like/post_function.php'); 
 		$per_page_record = 8;  // Number of entries to show in a page.   
-
+    if(!isset($_SESSION['loggedin']) || ($_SESSION['loggedin']!=true)){
+            header("location: ./login.php");
+            exit;
+        }
 	if (isset($_GET["page"])) {    
 		$page  = $_GET["page"];    
 	}    
@@ -14,7 +17,6 @@
 
     $sql = "SELECT * FROM `post` LIMIT $start_from, $per_page_record;";
     $result = mysqli_query($conn, $sql); 
-	// Look for a GET variable page if not found default is 1.        
 	    
 ?>
 <!DOCTYPE html>
@@ -61,7 +63,6 @@ header{
     background-position: cover cover;
     background-repeat: no-repeat;
     background-size: cover;
-    /* position:center; */
 }
 .container{
     justify-content: center;

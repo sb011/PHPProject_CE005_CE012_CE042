@@ -1,6 +1,10 @@
 <?php
 require_once('../partials/dbconnect.php');
-
+session_start();
+if(!isset($_SESSION['loggedin']) || ($_SESSION['loggedin']!=true)){
+    header("location: ./login.php");
+    exit;
+}
 if(isset($_GET['id'])){
     $id = $_GET['id'];
     $sqlcomment = "SELECT * FROM `comment` WHERE `user_id`=$id";
@@ -151,7 +155,6 @@ table th {
 
 <?php
 
-session_start();
 include '../partials/nav3.php'; ?>
 <body>
 <div class="container">
