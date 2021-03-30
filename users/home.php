@@ -1,23 +1,23 @@
 <?php
-    require_once('../partials/dbconnect.php');
-    include('../like/post_function.php'); 
-		$per_page_record = 8;  // Number of entries to show in a page.   
-    if(!isset($_SESSION['loggedin']) || ($_SESSION['loggedin']!=true)){
-            header("location: ./login.php");
-            exit;
-        }
-	if (isset($_GET["page"])) {    
-		$page  = $_GET["page"];    
-	}    
-	else {    
-	  $page=1;    
-	}    
+require_once('../partials/dbconnect.php');
+include('../like/post_function.php'); 
+$per_page_record = 8;  // Number of entries to show in a page.   
+if(!isset($_SESSION['loggedin']) || ($_SESSION['loggedin']!=true)){
+        header("location: ./login.php");
+        exit;
+    }
+if (isset($_GET["page"])) {    
+  $page  = $_GET["page"];    
+}    
+else {    
+  $page=1;    
+}    
 
-	$start_from = ($page-1) * $per_page_record;     
+$start_from = ($page-1) * $per_page_record;     
 
-    $sql = "SELECT * FROM `post` LIMIT $start_from, $per_page_record;";
-    $result = mysqli_query($conn, $sql); 
-	    
+$sql = "SELECT * FROM `post` LIMIT $start_from, $per_page_record;";
+$result = mysqli_query($conn, $sql); 
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">

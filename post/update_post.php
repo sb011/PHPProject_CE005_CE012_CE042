@@ -5,17 +5,29 @@ if(!isset($_SESSION['loggedin']) || ($_SESSION['loggedin']!=true)){
     header("location: ../users/login.php");
     exit;
 }
-if(isset($_GET['id']) && isset($_GET['user_id']))
-{   
-    $user_id = $_GET['user_id'];
-    $id = $_GET['id'];
-    $sql = "SELECT * FROM `post` WHERE `Id`=${_GET['id']}";
-    if($result = mysqli_query($conn, $sql))
-    {
-        $data = mysqli_fetch_array($result);
-        $id = $data['Id'];
-        $title = $data['title'];
-        $post = $data['post'];
+
+$username = $_SESSION['username'];
+$getuser = "SELECT * FROM `users` WHERE username='$username'";
+$userresult = mysqli_query($conn, $getuser);
+$data5 = mysqli_fetch_assoc($userresult);
+
+$getyourpost = "SELECT * FROM `post` WHERE `user_id`={$data5['Id']}";
+$getpost = mysqli_query($conn, $getyourpost);
+$data6 = mysqli_fetch_assoc($getpost);
+
+if($_GET['id'] == $data6['Id']){
+    if(isset($_GET['id']) && isset($_GET['user_id']))
+    {   
+        $user_id = $_GET['user_id'];
+        $id = $_GET['id'];
+        $sql = "SELECT * FROM `post` WHERE `Id`=${_GET['id']}";
+        if($result = mysqli_query($conn, $sql))
+        {
+            $data = mysqli_fetch_array($result);
+            $id = $data['Id'];
+            $title = $data['title'];
+            $post = $data['post'];
+        }
     }
 }
 if(isset($_POST['update_post'])){
@@ -109,6 +121,10 @@ include '../partials/nav2.php'; ?>
 <body>
     <div class="container">
     <form method="POST" action="/forum/post/update_post.php">
+        <?php
+            if ((int)$data5['Id'] == (int)$_GET['user_id']){
+                if($_GET['id'] == $data6['Id']){
+        ?>
         <input type="hidden" name="id" value="<?php echo $id; ?>">
         <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
         <label for="title">Title</label>
@@ -116,6 +132,15 @@ include '../partials/nav2.php'; ?>
         <label for="post">Post</label>
         <textarea type="text" id="post" name="post" placeholder="Post..." value="<?php echo $post;?>"></textarea>
         <button type="submit" name="update_post">Post</button>
+        <?php 
+                }
+                else{
+                    echo "This is not you post!!";
+                }
+            }
+            else{
+                echo "Go to Your Profile!!";
+            } ?>
     </form>
     </div>
 </body>

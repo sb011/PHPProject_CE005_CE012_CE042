@@ -5,6 +5,12 @@ if(!isset($_SESSION['loggedin']) || ($_SESSION['loggedin']!=true)){
     header("location: ./login.php");
     exit;
 }
+
+$username = $_SESSION['username'];
+$getuser = "SELECT * FROM `users` WHERE username='$username'";
+$userresult = mysqli_query($conn, $getuser);
+$data5 = mysqli_fetch_assoc($userresult);
+
 if(isset($_GET['id'])){
     $id = $_GET['id'];
     $sqlcomment = "SELECT * FROM `comment` WHERE `user_id`=$id";
@@ -166,8 +172,12 @@ include '../partials/nav3.php'; ?>
             <th>Comment</th>
             <th>likes</th>
             <th>Post</th>
+            <?php
+                if ((int)$data5['Id'] == (int)$_GET['id']){
+            ?>
             <th>update</th>
             <th>Remove</th>
+            <?php } ?>
         </tr>
         </thead>
         <tbody class="body-half-screen">
@@ -194,8 +204,12 @@ include '../partials/nav3.php'; ?>
                     echo $data4['username'];
                    ?>
             </td>
+            <?php
+                if ((int)$data5['Id'] == (int)$_GET['id']){
+            ?>
             <td><a href="../comment/update_comment.php?id=<?php echo $data2['Id']?>&user_id=<?php echo $data2['user_id'] ?>&post_id=<?php echo $data2['post_id'] ?>">update</a></td>
             <td><a href="../comment/remove_comment.php?id=<?php echo $data2['Id']?>&user_id=<?php echo $data2['user_id'] ?>&post_id=<?php echo $data2['post_id'] ?>">Remove</a></td>
+            <?php } ?>
         </tr>
         <?php
                 } 

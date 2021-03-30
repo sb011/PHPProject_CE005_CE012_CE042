@@ -5,6 +5,7 @@ if(!isset($_SESSION['loggedin']) || ($_SESSION['loggedin']!=true)){
     header("location: ../users/login.php");
     exit;
 }
+
 if(isset($_GET['id'])){
     $id = $_GET['id'];
     $sql = "SELECT * FROM `post` WHERE `Id`=$id";

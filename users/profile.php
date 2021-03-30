@@ -6,6 +6,7 @@ if(!isset($_SESSION['loggedin']) || ($_SESSION['loggedin']!=true)){
     header("location: ./login.php");
     exit;
 }
+
 $username = $_SESSION['username'];
 $getuser = "SELECT * FROM `users` WHERE username='$username'";
 $userresult = mysqli_query($conn, $getuser);

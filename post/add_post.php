@@ -5,6 +5,12 @@ if(!isset($_SESSION['loggedin']) || ($_SESSION['loggedin']!=true)){
     header("location: ../users/login.php");
     exit;
 }
+
+$username = $_SESSION['username'];
+$getuser = "SELECT * FROM `users` WHERE username='$username'";
+$userresult = mysqli_query($conn, $getuser);
+$data5 = mysqli_fetch_assoc($userresult);
+
 if(isset($_GET['user_id']))
 {
     $user_id = $_GET['user_id'];
@@ -96,12 +102,20 @@ if (isset($_POST['add_post'])){
 include '../partials/nav2.php'; ?>
 <body>
     <form method="POST" action="/forum/post/add_post.php" class="container">
+        <?php
+            if ((int)$data5['Id'] == (int)$_GET['user_id']){
+        ?>
         <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
         <label for="title">Title</label>
         <input type="text" id="title" name="title" placeholder="Title...">
         <label for="post">Post</label>
         <textarea type="text" id="post" name="post" placeholder="Post..."></textarea>
         <button type="submit" name="add_post">Post</button>
+        <?php
+            }
+        else{
+            echo "Go to Your Profile!!";
+        } ?>
     </form>
 </body>
 </header>

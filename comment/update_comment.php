@@ -5,17 +5,33 @@ if(!isset($_SESSION['loggedin']) || ($_SESSION['loggedin']!=true)){
     header("location: ../users/login.php");
     exit;
 }
-if(isset($_GET['id']) && isset($_GET['user_id']) && isset($_GET['post_id']))
-{   
-    $id = $_GET['id'];
-    $user_id = $_GET['user_id'];
-    $post_id = $_GET['post_id'];
-    $sql = "SELECT * FROM `comment` WHERE `Id`=${_GET['id']}";
-    if($result = mysqli_query($conn, $sql))
-    {
-        $data = mysqli_fetch_array($result);
-        $id = $data['Id'];
-        $comment = $data['comment'];
+
+$username = $_SESSION['username'];
+$getuser = "SELECT * FROM `users` WHERE username='$username'";
+$userresult = mysqli_query($conn, $getuser);
+$data5 = mysqli_fetch_assoc($userresult);
+
+$getyourpost = "SELECT * FROM `post` WHERE `user_id`={$data5['Id']}";
+$getpost = mysqli_query($conn, $getyourpost);
+$data6 = mysqli_fetch_assoc($getpost);
+
+$getyourcomment = "SELECT * FROM `comment` WHERE `user_id`={$data5['Id']} AND `post_id`={$data6['Id']}";
+$getcomment = mysqli_query($conn, $getyourcomment);
+$data7 = mysqli_fetch_assoc($getcomment);
+
+if($_GET['id'] == $data7['Id']){
+    if(isset($_GET['id']) && isset($_GET['user_id']) && isset($_GET['post_id']))
+    {   
+        $id = $_GET['id'];
+        $user_id = $_GET['user_id'];
+        $post_id = $_GET['post_id'];
+        $sql = "SELECT * FROM `comment` WHERE `Id`=${_GET['id']}";
+        if($result = mysqli_query($conn, $sql))
+        {
+            $data = mysqli_fetch_array($result);
+            $id = $data['Id'];
+            $comment = $data['comment'];
+        }
     }
 }
 if(isset($_POST['update_comment'])){
@@ -104,12 +120,30 @@ include '../partials/nav2.php'; ?>
 
 <body>
     <form method="POST" action="/forum/comment/update_comment.php" class="container">
+    <?php
+        if ((int)$data5['Id'] == (int)$_GET['user_id']){
+            if($_GET['post_id'] == $data6['Id']){
+                if($_GET['id'] == $data7['Id']){
+    ?>
         <input type="hidden" name="id" value="<?php echo $id; ?>">
         <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
         <input type="hidden" name="post_id" value="<?php echo $post_id ?>">
         <label for="comment">Comment</label>
         <textarea type="text" id="comment" name="comment" placeholder="Comment..." value="<?php echo $comment;?>"></textarea>
         <button type="submit" name="update_comment">Post</button>
+        <?php
+                }
+                else{
+                    echo "This is not your comment!!";
+                }
+            }
+            else{
+                echo "This is not you post!!";
+            }
+        }
+        else{
+            echo "Go to your Profile!!";
+        } ?>
     </form>
 </body>
 </header>

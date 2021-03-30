@@ -5,6 +5,16 @@ if(!isset($_SESSION['loggedin']) || ($_SESSION['loggedin']!=true)){
     header("location: ../users/login.php");
     exit;
 }
+
+$username = $_SESSION['username'];
+$getuser = "SELECT * FROM `users` WHERE username='$username'";
+$userresult = mysqli_query($conn, $getuser);
+$data5 = mysqli_fetch_assoc($userresult);
+
+$getyourpost = "SELECT * FROM `post` WHERE `user_id`={$data5['Id']}";
+$getpost = mysqli_query($conn, $getyourpost);
+$data6 = mysqli_fetch_assoc($getpost);
+
 if(isset($_GET['id']))
 {
     $id = $_GET['id'];
@@ -91,6 +101,10 @@ p{
 include '../partials/nav2.php'; ?>
 <body>
     <div class="container">
+        <?php
+            if ((int)$data5['Id'] == (int)$_GET['user_id']){
+                if($_GET['id'] == $data6['Id']){
+        ?>
         <p>Are you sure you want to delete this record?</p>
         <form action="/forum/post/remove_post.php" method="post">
             <input type="hidden" name="id" value="<?php echo $id; ?>">
@@ -99,6 +113,15 @@ include '../partials/nav2.php'; ?>
             <button type="submit" name="delete_post">Yes</button>
             <br><br>
             <a href="../users/profile.php?id=<?php echo $user_id?>">No</a>
+        <?php 
+        }
+        else{
+            echo "This is not you post!!";
+        }
+        }
+        else{
+            echo "Go to Your Profile!!";
+        } ?>
         </form>
         </div>
 </body>
