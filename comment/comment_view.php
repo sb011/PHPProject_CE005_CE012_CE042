@@ -1,26 +1,21 @@
 <?php
 require_once('../partials/dbconnect.php');
-include('../like/post_function.php');
+session_start();
 if(!isset($_SESSION['loggedin']) || ($_SESSION['loggedin']!=true)){
     header("location: ../users/login.php");
     exit;
 }
 
-if(isset($_GET['id'])){
-    $id = $_GET['id'];
+if(isset($_GET['post_id']) && isset($_GET['comment_id'])){
+    $id = $_GET['post_id'];
     $sql = "SELECT * FROM `post` WHERE `Id`=$id";
     $result = mysqli_query($conn, $sql);
     $data = mysqli_fetch_assoc($result);
 
-    // session_start();
-    $username = $_SESSION['username'];
-    $getuser = "SELECT * FROM `users` WHERE username='$username'";
-    $userresult = mysqli_query($conn, $getuser);
-    $data3 = mysqli_fetch_assoc($userresult);
-
-    $commentsql = "SELECT * FROM `comment` WHERE `post_id`=$id";
-    $result2 = mysqli_query($conn, $commentsql);
-    
+    $comment_id = $_GET['comment_id'];
+    $sqlcomment = "SELECT * FROM `comment` WHERE `Id`=$comment_id";
+    $result1 = mysqli_query($conn, $sqlcomment);
+    $data1 = mysqli_fetch_assoc($result1);
 }
 ?>
 
@@ -79,7 +74,6 @@ table, th, td {
 th, td {
     padding: 10px;  
     float: left;
-    overflow: hidden;
 } 
 
 .table-scroll {
@@ -139,7 +133,7 @@ table th {
     background-color: gray;  
 }
 
-/* .container a{
+.container btn_comment{
     background-color: #4CAF50;
     color: white;
     font-size: 20px;
@@ -148,22 +142,13 @@ table th {
 }
 .container a:hover{
   opacity: 0.8;
-} */
+}
 #cmt{
   inline-size: 400px;
 }
-.link{
-    margin-bottom: 20px;
-}
-.link a{
-    background-color: #4CAF50;
-    color: white;
-    font-size: 20px;
-    text-decoration: none;
-    padding: 10px;
-}
-</style>
-</head>
+
+  </style>
+  </head>
   <header>
   <?php
 include '../partials/nav3.php'; ?>
@@ -172,72 +157,14 @@ include '../partials/nav3.php'; ?>
   <div class="container">
     <h1>Post Title: <?php echo $data['title'] ?></h1>
     <h1>Post: <?php echo $data['post'] ?></h1>
-    <h1>Post likes:
-    
-                  <!-- if user likes post, style button differently -->
-                    <i <?php if (userLiked($data['Id'])): ?>
-                      class="fa fa-thumbs-up like-btn"
-                    <?php else: ?>
-                      class="fa fa-thumbs-o-up like-btn"
-                    <?php endif ?>
-                    data-id="<?php echo $data['Id'] ?>" style="color:red;"></i>
-                  <span class="likes"><?php echo getLikes($data['Id']); ?></span>
-                  
-                  &nbsp;&nbsp;&nbsp;&nbsp;
-
-                <!-- if user dislikes post, style button differently -->
-                  <i 
-                    <?php if (userDisliked($data['Id'])): ?>
-                      class="fa fa-thumbs-down dislike-btn"
-                    <?php else: ?>
-                      class="fa fa-thumbs-o-down dislike-btn"
-                    <?php endif ?>
-                    data-id="<?php echo $data['Id'] ?>" style="color:red;"></i>
-                  <span class="dislikes"><?php echo getDislikes($data['Id']); ?></span>
-                  <script src="../like/scripts.js"></script>
-    
-    </h1>
-    <h1>Posted By: <?php
-                    $id = $data['user_id'];
-                    $sqluser = "SELECT * FROM `users` WHERE `Id`=$id";
-                    $result1 = mysqli_query($conn, $sqluser);
-                    $user = mysqli_fetch_array($result1);
-                    echo $user['username'];
-                  ?></h1><br>
-    <div class="link">
-    <a href="../comment/add_comment.php?user_id=<?php echo $data3['Id']?>&post_id=<?php echo $data['Id'] ?>">Add Comment</a>
-    </div>
-    <table border=1 class="table table-scroll small-first-col">
-      <thead>
-      <tr>
-        <th>Comment</th>
-        <th>Commented By</th>
-      </tr>
-      </thead>
-      <tbody class="body-half-screen">
-      <?php
-        if ($result2){
-          if(mysqli_num_rows($result2) > 0 ){
-            while($data1 = mysqli_fetch_array($result2)){ 
-              ?>      
-      <tr>
-        <td id="cmt"><a href="../comment/comment_view.php?user_id=<?php echo $data3['Id']?>&post_id=<?php echo $data['Id'] ?>&comment_id=<?php echo $data1['Id'] ?>"><?php echo $data1['comment'] ?></a></td>
-        <td id="user"><?php
-              $user_id = $data1['user_id'];
+    <h1 style="word-break: break-all;">Comment: <br> <?php echo $data1['comment'] ?></h1>
+    <h1>Commented By:<?php
+              $user_id = $data['user_id'];
               $sqlcommentuser = "SELECT * FROM `users` WHERE `Id`=$user_id";
               $result3 = mysqli_query($conn, $sqlcommentuser);
               $commentuser = mysqli_fetch_array($result3);
-              echo $commentuser['username'];
-            ?></td>
-      </tr>
-      <?php
-            }
-          }
-        }
-      ?>
-      </tbody>
-    </table>
-    </div>
+              echo $commentuser['username'];?></h1>
+  </div>
 </body>
 </header>
 </html>
