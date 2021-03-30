@@ -146,19 +146,24 @@ table th {
 #cmt{
   inline-size: 400px;
 }
+.container b{
+  color:aqua;
+  margin-top:20px;
+  margin-bottom:20px;
+}
 
   </style>
   </head>
   <header>
   <?php
-include '../partials/nav3.php'; ?>
+include '../partials/nav2.php'; ?>
 
 <body>
   <div class="container">
-    <h1>Post Title: <?php echo $data['title'] ?></h1>
-    <h1>Post: <?php echo $data['post'] ?></h1>
-    <h1 style="word-break: break-all;">Comment: <br> <?php echo $data1['comment'] ?></h1>
-    <h1>Commented By:<?php
+    <h1><b>Post Title:</b> <?php echo $data['title'] ?></h1>
+    <h1><b>Post: </b><?php echo $data['post'] ?></h1>
+    <h1 style="word-break: break-all;"><b>Comment:</b> <br> <?php echo $data1['comment'] ?></h1>
+    <h1><b>Commented By:</b><?php
               $user_id = $data['user_id'];
               $sqlcommentuser = "SELECT * FROM `users` WHERE `Id`=$user_id";
               $result3 = mysqli_query($conn, $sqlcommentuser);

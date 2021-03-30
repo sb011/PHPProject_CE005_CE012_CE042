@@ -138,17 +138,12 @@ table th {
     color: white;  
     background-color: gray;  
 }
-
-/* .container a{
-    background-color: #4CAF50;
-    color: white;
-    font-size: 20px;
-    text-decoration: none;
-    padding: 10px;
+.container b{
+  color:aqua;
+  margin-top:20px;
+  margin-bottom:20px;
 }
-.container a:hover{
-  opacity: 0.8;
-} */
+
 #cmt{
   inline-size: 400px;
 }
@@ -162,6 +157,10 @@ table th {
     text-decoration: none;
     padding: 10px;
 }
+.link a:hover{
+  opacity: 0.8;
+}
+
 </style>
 </head>
   <header>
@@ -170,9 +169,9 @@ include '../partials/nav3.php'; ?>
 
 <body>
   <div class="container">
-    <h1>Post Title: <?php echo $data['title'] ?></h1>
-    <h1>Post: <?php echo $data['post'] ?></h1>
-    <h1>Post likes:
+    <h1><b>Post Title: </b><?php echo $data['title'] ?></h1>
+    <h1><b>Post: </b><?php echo $data['post'] ?></h1>
+    <h1><b>Post likes:</b>
     
                   <!-- if user likes post, style button differently -->
                     <i <?php if (userLiked($data['Id'])): ?>
@@ -197,7 +196,7 @@ include '../partials/nav3.php'; ?>
                   <script src="../like/scripts.js"></script>
     
     </h1>
-    <h1>Posted By: <?php
+    <h1><b>Posted By: </b><?php
                     $id = $data['user_id'];
                     $sqluser = "SELECT * FROM `users` WHERE `Id`=$id";
                     $result1 = mysqli_query($conn, $sqluser);

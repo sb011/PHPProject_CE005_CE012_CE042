@@ -72,18 +72,19 @@ header{
 	width: 100%;
 	padding: 15px 0px;
 }
-.button {
+button {
   background-color: #4CAF50; 
   border: none;
   color: white;
-  padding: 11px 32px;
+  padding: 8px 22px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 18px;
+  font-size: 20px;
   cursor: pointer;
+  margin-right: 10px;
 }
-.button:hover {
+button:hover {
   opacity: 0.8;
 }
 </style>
@@ -105,10 +106,12 @@ echo'
 <ul>
 <li><a href="../index.php" class="active">Home</a></li>
 <li><a href="home.php">Posts</a></li>
-<div class="search">
-     <input type="text" name="search" id="search" placeholder="search here">
-     <button type="search" class="button" value="search">Search</button>
-</div>';
+<button onclick="goBack()">Go Back</button>
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>';
 }
 if(!$loggedin){
 echo'<li><a href="signup.php" class="active">signup</a></li>

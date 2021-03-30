@@ -13,19 +13,25 @@ $data5 = mysqli_fetch_assoc($userresult);
 
 $getyourpost = "SELECT * FROM `post` WHERE `user_id`={$data5['Id']}";
 $getpost = mysqli_query($conn, $getyourpost);
-$data6 = mysqli_fetch_assoc($getpost);
 
-if(isset($_GET['id']))
-{
-    $id = $_GET['id'];
-    $user_id = $_GET['user_id'];
+$flag = 0;
+
+while($data6 = mysqli_fetch_array($getpost)){
+    if($_GET['id'] == $data6['Id']){
+        if(isset($_GET['id']))
+        {
+            $id = $_GET['id'];
+            $user_id = $_GET['user_id'];
+        }
+        $flag = 1;
+    }
 }
 if (isset($_POST['delete_post'])) {
     $user_id = $_POST['user_id'];
-	$id = $_POST['id'];
+    $id = $_POST['id'];
     $sql = "DELETE FROM `post` WHERE `Id`=$id";
     $result = mysqli_query($conn, $sql);
-	if ($result){
+    if ($result){
         header('location: ../users/profile.php?id='.$user_id);
     }
 }
@@ -103,7 +109,7 @@ include '../partials/nav2.php'; ?>
     <div class="container">
         <?php
             if ((int)$data5['Id'] == (int)$_GET['user_id']){
-                if($_GET['id'] == $data6['Id']){
+                if($flag == 1){
         ?>
         <p>Are you sure you want to delete this record?</p>
         <form action="/forum/post/remove_post.php" method="post">

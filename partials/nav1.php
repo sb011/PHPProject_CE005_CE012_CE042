@@ -52,6 +52,9 @@ header{
     color: white;
     font-size: 20px;
 }
+.navbar li a.active:hover{
+    opacity: 0.8;
+}
 .search{
     color:white;
     float:right;

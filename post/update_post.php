@@ -11,25 +11,32 @@ $getuser = "SELECT * FROM `users` WHERE username='$username'";
 $userresult = mysqli_query($conn, $getuser);
 $data5 = mysqli_fetch_assoc($userresult);
 
-$getyourpost = "SELECT * FROM `post` WHERE `user_id`={$data5['Id']}";
-$getpost = mysqli_query($conn, $getyourpost);
-$data6 = mysqli_fetch_assoc($getpost);
+if(isset($_GET['id'])){
+    $getyourpost = "SELECT * FROM `post` WHERE `user_id`={$data5['Id']} AND `Id`={$_GET['id']}";
+    $getpost = mysqli_query($conn, $getyourpost);
 
-if($_GET['id'] == $data6['Id']){
-    if(isset($_GET['id']) && isset($_GET['user_id']))
-    {   
-        $user_id = $_GET['user_id'];
-        $id = $_GET['id'];
-        $sql = "SELECT * FROM `post` WHERE `Id`=${_GET['id']}";
-        if($result = mysqli_query($conn, $sql))
-        {
-            $data = mysqli_fetch_array($result);
-            $id = $data['Id'];
-            $title = $data['title'];
-            $post = $data['post'];
+    $flag = 0;
+    while($data6 = mysqli_fetch_array($getpost)){
+        if($_GET['id'] == $data6['Id']){
+            if(isset($_GET['id']) && isset($_GET['user_id']))
+            {   
+                $user_id = $_GET['user_id'];
+                $id = $_GET['id'];
+                $sql = "SELECT * FROM `post` WHERE `Id`=${_GET['id']}";
+                if($result = mysqli_query($conn, $sql))
+                {
+                    $data = mysqli_fetch_array($result);
+                    $id = $data['Id'];
+                    $title = $data['title'];
+                    $post = $data['post'];
+                }
+    
+            }
+            $flag = 1;
         }
     }
 }
+
 if(isset($_POST['update_post'])){
     $id = $_POST['id'];
     $user_id = $_POST['user_id'];
@@ -123,7 +130,7 @@ include '../partials/nav2.php'; ?>
     <form method="POST" action="/forum/post/update_post.php">
         <?php
             if ((int)$data5['Id'] == (int)$_GET['user_id']){
-                if($_GET['id'] == $data6['Id']){
+                if($flag == 1){
         ?>
         <input type="hidden" name="id" value="<?php echo $id; ?>">
         <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
@@ -133,11 +140,11 @@ include '../partials/nav2.php'; ?>
         <textarea type="text" id="post" name="post" placeholder="Post..." value="<?php echo $post;?>"></textarea>
         <button type="submit" name="update_post">Post</button>
         <?php 
+                    }
+                    else{
+                        echo "This is not you post!!";
+                    }
                 }
-                else{
-                    echo "This is not you post!!";
-                }
-            }
             else{
                 echo "Go to Your Profile!!";
             } ?>

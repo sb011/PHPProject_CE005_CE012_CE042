@@ -11,10 +11,21 @@ $getuser = "SELECT * FROM `users` WHERE username='$username'";
 $userresult = mysqli_query($conn, $getuser);
 $data5 = mysqli_fetch_assoc($userresult);
 
-if(isset($_GET['user_id']) && isset($_GET['post_id']))
-{
-    $user_id = $_GET['user_id'];
-    $post_id = $_GET['post_id'];
+if(isset($_GET['post_id'])){
+    $getyourpost = "SELECT * FROM `post` WHERE `user_id`={$data5['Id']} AND `Id`={$_GET['post_id']}";
+    $getpost = mysqli_query($conn, $getyourpost);
+
+    $flag = 0;    
+    while($data6 = mysqli_fetch_array($getpost)){
+        if($_GET['post_id'] == $data6['Id']){
+            if(isset($_GET['user_id']) && isset($_GET['post_id']))
+            {
+                $user_id = $_GET['user_id'];
+                $post_id = $_GET['post_id'];
+            }
+            $flag = 1;
+        }
+    }
 }
 
 if (isset($_POST['add_comment'])){
@@ -107,6 +118,7 @@ include '../partials/nav2.php'; ?>
     <form method="POST" action="/forum/comment/add_comment.php" class="container">
         <?php
             if ((int)$data5['Id'] == (int)$_GET['user_id']){
+                if($flag == 1){
         ?>
         <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
         <input type="hidden" name="post_id" value="<?php echo $post_id ?>">
@@ -114,6 +126,10 @@ include '../partials/nav2.php'; ?>
         <textarea type="text" id="comment" name="comment" placeholder="Comment..."></textarea>
         <button type="submit" name="add_comment">comment</button>
         <?php
+                }
+                else{
+                    echo "This is not your post!!";
+                }
             }
             else{
                 echo "Go to Your Profile!!";
