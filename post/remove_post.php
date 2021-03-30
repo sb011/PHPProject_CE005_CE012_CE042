@@ -82,7 +82,9 @@ p{
     </style>
 </head>
 <header>
-<?php include '../partials/nav.php'; ?>
+<?php 
+session_start();
+include '../partials/nav2.php'; ?>
 <body>
     <div class="container">
         <p>Are you sure you want to delete this record?</p>

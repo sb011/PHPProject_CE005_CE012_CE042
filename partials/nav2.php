@@ -12,7 +12,7 @@ body {
 }
 
 header{
-    background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),url("images/1624.jpg");
+    background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),url("../images/1624.jpg");
     -webkit-background-size: cover;
     height:100vh;  
     background-position: cover cover;
@@ -72,18 +72,19 @@ header{
 	width: 100%;
 	padding: 15px 0px;
 }
-.button {
+button {
   background-color: #4CAF50; 
   border: none;
   color: white;
   padding: 11px 32px;
+  margin-right:50px ;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 18px;
   cursor: pointer;
 }
-.button:hover {
+button:hover {
   opacity: 0.8;
 }
 </style>
@@ -103,14 +104,13 @@ else{
 if($loggedin){
 echo'
 <ul>
-<li><a href="users/home.php" class="active">Posts</a></li>
-<li><a href="">New games</a></li>
-<li><a href="">Pro gamers</a></li>
-<li><a href="users/logout.php">Logout</a></li>
-<div class="search">
-     <input type="text" name="search" id="search" placeholder="search here">
-     <button type="search" class="button" value="search">Search</button>
-</div>';
+<button onclick="goBack()">Go Back</button>
+
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>';
 }
 if(!$loggedin){
 echo'<li><a href="signup.php" class="active">signup</a></li>

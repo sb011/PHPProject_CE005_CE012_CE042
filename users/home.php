@@ -1,6 +1,6 @@
 <?php
     require_once('../partials/dbconnect.php');
-    include('../like/post_function.php');
+    include('../like/post_function.php'); 
 		$per_page_record = 8;  // Number of entries to show in a page.   
 
 	if (isset($_GET["page"])) {    
@@ -17,10 +17,6 @@
 	// Look for a GET variable page if not found default is 1.        
 	    
 ?>
-<style>
-
-
-</style>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -115,6 +111,7 @@ table tr:nth-child(odd) {
     color:gray;
 }  
 table th {  
+    text-align: center;
     color: white;  
     background-color: gray;  
 }
@@ -123,17 +120,14 @@ table, th, td {
         border: 1px solid black;
         border-collapse: collapse;
     }
-
-
-    .inline{   
-            display: inline-block;   
-            float: right;   
-            margin: 20px 0px;   
-        }   
-         
-        input, button{   
-            height: 34px;   
-        }   
+.inline{   
+        display: inline-block;   
+        float: right;   
+        margin: 20px 0px;   
+    }   
+    input, button{   
+        height: 34px;   
+    }   
   
     .pagination {   
         display: inline-block;   
@@ -154,11 +148,45 @@ table, th, td {
     }   
     .pagination a:hover:not(.active) {   
         background-color: skyblue;   
-    }   
+    } 
+button {
+    float:right;
+  background-color: #4CAF50; 
+  margin-top: 40px;
+  border: none;
+  color: white;
+  padding: 0px 32px;
+  height:6%;
+  margin-right:50px ;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  cursor: pointer;
+}
+button:hover {
+  opacity: 0.8;
+}
+.logo {
+	float: left;
+}
+.logo img {
+	width: 100%;
+	padding: 15px 0px;
+}
+  
 </style>
 </head>
 <header>
-
+<button onclick="goBack()">Go Back</button>
+<div class="logo">
+     <img src="https://i.postimg.cc/mg4rWBmv/logo.png" alt="">
+</div>
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
 <body>
 <div class="container">
 <table>

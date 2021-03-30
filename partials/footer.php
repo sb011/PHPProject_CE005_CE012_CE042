@@ -175,7 +175,7 @@ footer{
           <div class="content">
             <div class="place">
               <span class="fas fa-map-marker-alt"></span>
-              <span class="text">Gujrat,Rajkot</span>
+              <span class="text">Gujrat,Nadiad</span>
             </div>
             <div class="phone">
               <span class="fas fa-phone-alt"></span>
@@ -183,7 +183,7 @@ footer{
             </div>
             <div class="email">
               <span class="fas fa-envelope"></span>
-              <span class="text">charvitardeshna@gmail.com</span>
+              <span class="text">abc@gmail.com</span>
             </div>
           </div>
         </div>
@@ -208,7 +208,7 @@ footer{
       </div>
       <div class="bottom">
         <center>
-          <span class="credit">Created By <a href="#">Charvit</a> | </span>
+          <span class="credit">Created By <a href="#">CSM_Team</a> | </span>
           <span class="far fa-copyright"></span><span> 2021 All rights reserved.</span>
         </center>
       </div>

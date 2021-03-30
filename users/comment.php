@@ -52,11 +52,7 @@ table{
     position: relative;
     display: block;
 }
-.table1{
-    /* margin-left: 70px;
-    margin-top: 25px;
-    margin-bottom: 25px; */
-}
+
 table a{
     text-decoration: none;
     color:black;
@@ -152,7 +148,11 @@ table th {
 
 </head>
 <header>
-<?php include '../partials/nav.php'; ?>
+
+<?php
+
+session_start();
+include '../partials/nav3.php'; ?>
 <body>
 <div class="container">
     <h1>Your Comments</h1>

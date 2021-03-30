@@ -12,7 +12,7 @@ body {
 }
 
 header{
-    background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),url("images/1624.jpg");
+    background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),url("../images/1624.jpg");
     -webkit-background-size: cover;
     height:100vh;  
     background-position: cover cover;
@@ -103,10 +103,8 @@ else{
 if($loggedin){
 echo'
 <ul>
-<li><a href="users/home.php" class="active">Posts</a></li>
-<li><a href="">New games</a></li>
-<li><a href="">Pro gamers</a></li>
-<li><a href="users/logout.php">Logout</a></li>
+<li><a href="../index.php" class="active">Home</a></li>
+<li><a href="home.php">Posts</a></li>
 <div class="search">
      <input type="text" name="search" id="search" placeholder="search here">
      <button type="search" class="button" value="search">Search</button>

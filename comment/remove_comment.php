@@ -84,7 +84,9 @@ p{
 </style>
 </head>
 <header>
-<?php include '../partials/nav.php'; ?>
+<?php 
+session_start();
+include '../partials/nav2.php'; ?>
 
 <body>
 <div class="container">
@@ -95,7 +97,7 @@ p{
             <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
             <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
             <button type="submit" name="delete_comment">Yes</button><br><br>
-            <a href="../users/profile.php?id=<?php echo $user_id?>">No</a>
+            <a href="../users/comment.php?id=<?php echo $user_id?>">No</a>
         </form>
 </div>
 </body>

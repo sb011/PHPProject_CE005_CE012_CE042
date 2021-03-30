@@ -94,7 +94,9 @@ if(isset($_POST['update_comment'])){
         </style>
 </head>
 <header>
-<?php include '../partials/nav.php'; ?>
+<?php 
+session_start();
+include '../partials/nav2.php'; ?>
 
 <body>
     <form method="POST" action="/forum/comment/update_comment.php" class="container">

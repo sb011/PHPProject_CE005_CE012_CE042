@@ -98,7 +98,9 @@ if(isset($_POST['update_post'])){
         </style>
 </head>
 <header>
-<?php include '../partials/nav.php'; ?>
+<?php 
+session_start();
+include '../partials/nav2.php'; ?>
 
 <body>
     <div class="container">

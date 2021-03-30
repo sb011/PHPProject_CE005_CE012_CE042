@@ -88,7 +88,9 @@ if (isset($_POST['add_post'])){
     </style>
 </head>
 <header>
-<?php include '../partials/nav.php'; ?>
+<?php 
+session_start();
+include '../partials/nav2.php'; ?>
 <body>
     <form method="POST" action="/forum/post/add_post.php" class="container">
         <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
