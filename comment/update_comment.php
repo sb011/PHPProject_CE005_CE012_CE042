@@ -11,26 +11,36 @@ $getuser = "SELECT * FROM `users` WHERE username='$username'";
 $userresult = mysqli_query($conn, $getuser);
 $data5 = mysqli_fetch_assoc($userresult);
 
-$getyourpost = "SELECT * FROM `post` WHERE `user_id`={$data5['Id']}";
-$getpost = mysqli_query($conn, $getyourpost);
-$data6 = mysqli_fetch_assoc($getpost);
+if(isset($_GET['post_id'])){
+    $getyourpost = "SELECT * FROM `post` WHERE `user_id`={$data5['Id']} AND `Id`={$_GET['post_id']}";
+    $getpost = mysqli_query($conn, $getyourpost);
 
-$getyourcomment = "SELECT * FROM `comment` WHERE `user_id`={$data5['Id']} AND `post_id`={$data6['Id']}";
-$getcomment = mysqli_query($conn, $getyourcomment);
-$data7 = mysqli_fetch_assoc($getcomment);
+    $flag = 0;
+    $flag1 = 0;
+    while($data6 = mysqli_fetch_array($getpost)){
+        if($_GET['post_id'] == $data6['Id']){
 
-if($_GET['id'] == $data7['Id']){
-    if(isset($_GET['id']) && isset($_GET['user_id']) && isset($_GET['post_id']))
-    {   
-        $id = $_GET['id'];
-        $user_id = $_GET['user_id'];
-        $post_id = $_GET['post_id'];
-        $sql = "SELECT * FROM `comment` WHERE `Id`=${_GET['id']}";
-        if($result = mysqli_query($conn, $sql))
-        {
-            $data = mysqli_fetch_array($result);
-            $id = $data['Id'];
-            $comment = $data['comment'];
+            $getyourcomment = "SELECT * FROM `comment` WHERE `user_id`={$data5['Id']} AND `post_id`={$data6['Id']}";
+            $getcomment = mysqli_query($conn, $getyourcomment);
+            while($data7 = mysqli_fetch_array($getcomment)){
+                if($data7['Id'] == $_GET['id']){
+                    if(isset($_GET['id']) && isset($_GET['user_id']) && isset($_GET['post_id']))
+                    {   
+                        $id = $_GET['id'];
+                        $user_id = $_GET['user_id'];
+                        $post_id = $_GET['post_id'];
+                        $sql = "SELECT * FROM `comment` WHERE `Id`=${_GET['id']}";
+                        if($result = mysqli_query($conn, $sql))
+                        {
+                            $data = mysqli_fetch_array($result);
+                            $id = $data['Id'];
+                            $comment = $data['comment'];
+                        }
+                    }
+                    $flag1 = 1;
+                }
+            }
+            $flag = 1;
         }
     }
 }
@@ -122,8 +132,8 @@ include '../partials/nav2.php'; ?>
     <form method="POST" action="/forum/comment/update_comment.php" class="container">
     <?php
         if ((int)$data5['Id'] == (int)$_GET['user_id']){
-            if($_GET['post_id'] == $data6['Id']){
-                if($_GET['id'] == $data7['Id']){
+            if($flag == 1){
+                if($flag1 == 1){
     ?>
         <input type="hidden" name="id" value="<?php echo $id; ?>">
         <input type="hidden" name="user_id" value="<?php echo $user_id ?>">

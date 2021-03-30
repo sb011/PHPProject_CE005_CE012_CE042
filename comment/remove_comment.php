@@ -13,19 +13,34 @@ $data5 = mysqli_fetch_assoc($userresult);
 
 $getyourpost = "SELECT * FROM `post` WHERE `user_id`={$data5['Id']}";
 $getpost = mysqli_query($conn, $getyourpost);
-$data6 = mysqli_fetch_assoc($getpost);
 
-$getyourcomment = "SELECT * FROM `comment` WHERE `user_id`={$data5['Id']} AND `post_id`={$data6['Id']}";
-$getcomment = mysqli_query($conn, $getyourcomment);
-$data7 = mysqli_fetch_assoc($getcomment);
+$flag = 0;
+$flag1 = 0;
 
-if(isset($_GET['id']) && isset($_GET['user_id']) && isset($_GET['post_id']))
-{
-    $id = $_GET['id'];
-    $user_id = $_GET['user_id'];
-    $post_id = $_GET['post_id'];
-    $user_id = $_GET['user_id'];
+// $getyourcomment = "SELECT * FROM `comment` WHERE `user_id`={$data5['Id']} AND `post_id`={$data6['Id']}";
+// $getcomment = mysqli_query($conn, $getyourcomment);
+// $data7 = mysqli_fetch_assoc($getcomment);
+
+while($data6 = mysqli_fetch_array($getpost)){
+    if($_GET['post_id'] == $data6['Id']){
+        $getyourcomment = "SELECT * FROM `comment` WHERE `user_id`={$data5['Id']} AND `post_id`={$data6['Id']}";
+        $getcomment = mysqli_query($conn, $getyourcomment);
+        while($data7 = mysqli_fetch_assoc($getcomment)){
+            if($data7['Id'] == $_GET['id']){
+                if(isset($_GET['id']) && isset($_GET['user_id']) && isset($_GET['post_id']))
+                {
+                    $id = $_GET['id'];
+                    $user_id = $_GET['user_id'];
+                    $post_id = $_GET['post_id'];
+                    $user_id = $_GET['user_id'];
+                }
+                $flag1 = 1;
+            }
+        }
+        $flag = 1;
+    }
 }
+
 if (isset($_POST['delete_comment'])) {
     $user_id = $_POST['user_id'];
     $post_id = $_POST['post_id'];
@@ -110,8 +125,8 @@ include '../partials/nav2.php'; ?>
 <div class="container">
         <?php
             if ((int)$data5['Id'] == (int)$_GET['user_id']){
-                if($_GET['post_id'] == $data6['Id']){
-                    if($_GET['id'] == $data7['Id']){
+                if($flag == 1){
+                    if($flag1 == 1){
         ?>
         <p>Are you sure you want to delete this record?</p>
         <form action="/forum/comment/remove_comment.php" method="post">
