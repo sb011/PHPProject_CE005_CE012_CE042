@@ -72,7 +72,8 @@ header{
 	float: left;
 }
 .logo img {
-	width: 100%;
+	width: 50%;
+    margin-left: 10px;
 	padding: 15px 0px;
 }
 .button {
@@ -93,7 +94,7 @@ header{
 </head>
 <body>
 <div class="logo">
-     <img src="https://i.postimg.cc/mg4rWBmv/logo.png" alt="">
+     <img src="images/logo1.png" alt="logo">
 </div>
 <nav class="navbar" >
 <?php
