@@ -11,34 +11,12 @@ $getuser = "SELECT * FROM `users` WHERE username='$username'";
 $userresult = mysqli_query($conn, $getuser);
 $data5 = mysqli_fetch_assoc($userresult);
 
-$getyourpost = "SELECT * FROM `post` WHERE `user_id`={$data5['Id']}";
-$getpost = mysqli_query($conn, $getyourpost);
-
-$flag = 0;
-$flag1 = 0;
-
-// $getyourcomment = "SELECT * FROM `comment` WHERE `user_id`={$data5['Id']} AND `post_id`={$data6['Id']}";
-// $getcomment = mysqli_query($conn, $getyourcomment);
-// $data7 = mysqli_fetch_assoc($getcomment);
-
-while($data6 = mysqli_fetch_array($getpost)){
-    if($_GET['post_id'] == $data6['Id']){
-        $getyourcomment = "SELECT * FROM `comment` WHERE `user_id`={$data5['Id']} AND `post_id`={$data6['Id']}";
-        $getcomment = mysqli_query($conn, $getyourcomment);
-        while($data7 = mysqli_fetch_assoc($getcomment)){
-            if($data7['Id'] == $_GET['id']){
-                if(isset($_GET['id']) && isset($_GET['user_id']) && isset($_GET['post_id']))
-                {
-                    $id = $_GET['id'];
-                    $user_id = $_GET['user_id'];
-                    $post_id = $_GET['post_id'];
-                    $user_id = $_GET['user_id'];
-                }
-                $flag1 = 1;
-            }
-        }
-        $flag = 1;
-    }
+if(isset($_GET['id']) && isset($_GET['user_id']) && isset($_GET['post_id']))
+{
+    $id = $_GET['id'];
+    $user_id = $_GET['user_id'];
+    $post_id = $_GET['post_id'];
+    $user_id = $_GET['user_id'];
 }
 
 if (isset($_POST['delete_comment'])) {
@@ -125,8 +103,6 @@ include '../partials/nav2.php'; ?>
 <div class="container">
         <?php
             if ((int)$data5['Id'] == (int)$_GET['user_id']){
-                if($flag == 1){
-                    if($flag1 == 1){
         ?>
         <p>Are you sure you want to delete this record?</p>
         <form action="/forum/comment/remove_comment.php" method="post">
@@ -138,14 +114,6 @@ include '../partials/nav2.php'; ?>
             <a href="../users/comment.php?id=<?php echo $user_id?>">No</a>
         </form>
         <?php
-        }
-                    else{
-                        echo "This is not your comment!!";
-                    }
-                }
-                else{
-                    echo "This is not the post on which you have commented!!";
-                }
             }
             else{
                 echo "Go to your Profile!!";

@@ -80,15 +80,11 @@ tr{
     overflow: none;
 }
 .table-scroll {
-    /*width:100%; */
     display: block;
-    /* empty-cells: show; */
     width: 25cm;
     height: 300px;
     margin-left: 3em;
-    /* Decoration */
     border-spacing: 0;
-    /* border: rgba(130, 130, 170, 0.1); */
   } 
   .table-scroll thead {
     border-radius: 15px;
@@ -101,14 +97,11 @@ tr{
 
   .table-scroll tbody {
     border-radius: 15px;
-    /* Position */
     display: block;
     position: relative;
     width: 100%;
     height: 330px;
     overflow-y: scroll;
-    /* overflow-y: hidden; */
-    /* Decoration */
     border-top: 1px solid rgba(0, 0, 0, 0.2);
   }
 
@@ -122,7 +115,6 @@ tr{
     flex-basis: 100%;
     flex-grow: 2;
     display: block;
-    /* padding: 1rem; */
     text-align: center;
   }
 

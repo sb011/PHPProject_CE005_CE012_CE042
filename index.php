@@ -35,7 +35,6 @@ if(isset($_SESSION['loggedin']) && isset($_SESSION['username'])){
 	color: #00fecb;
 }
 .welcome-text a {
-	/* border: 1px solid #fff; */
 	padding: 10px 25px;
 	text-decoration: none;
 	text-transform: uppercase;

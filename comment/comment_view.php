@@ -61,7 +61,7 @@ if(isset($_GET['comment_id'])){
   margin-bottom:20px;
 }
 .container::-webkit-scrollbar { 
-    display: none;  /* Safari and Chrome */
+    display: none; 
 }
 h1{
     font-size: 40px;
